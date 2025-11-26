@@ -462,12 +462,16 @@
                     musicProgress: document.getElementById('musicProgress')
                 };
 
+                console.log('SpotifyIntegration initialized with Client ID:', this.clientId);
                 this.checkToken();
                 this.init();
             }
 
             init() {
+                console.log('Adding click event listener to Connect button');
                 this.elements.spotifyConnect.addEventListener('click', () => {
+                    console.log('Connect button clicked');
+                    console.log('Current connection status:', this.isConnected);
                     this.isConnected ? this.disconnect() : this.connect();
                 });
             }
@@ -476,18 +480,28 @@
                 const hash = window.location.hash.substring(1);
                 const params = new URLSearchParams(hash);
                 
+                console.log('Checking for token in URL...');
+                
                 if (params.has('access_token')) {
                     this.accessToken = params.get('access_token');
                     this.isConnected = true;
+                    console.log('Access token found! Connection successful');
                     this.onConnected();
                     // Pulisce l'URL senza ricaricare la pagina
-                    window.location.hash = '';
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } else {
+                    console.log('No access token found in URL');
                 }
             }
 
             connect() {
+                console.log('Attempting to connect to Spotify...');
+                
                 // Usa ESATTAMENTE lo stesso URL del Spotify Dashboard
                 const redirectUri = 'https://st0rmosu.github.io/CustomPomodoroTimer/';
+                
+                console.log('Redirect URI:', redirectUri);
+                console.log('Client ID:', this.clientId);
                 
                 const authUrl = `https://accounts.spotify.com/authorize?${
                     new URLSearchParams({
@@ -498,10 +512,13 @@
                         show_dialog: true
                     })
                 }`;
+                
+                console.log('Redirecting to Spotify auth...');
                 window.location.href = authUrl;
             }
 
             disconnect() {
+                console.log('Disconnecting from Spotify...');
                 this.isConnected = false;
                 this.accessToken = null;
                 this.elements.spotifyConnect.textContent = 'CONNECT';
@@ -509,41 +526,55 @@
             }
 
             onConnected() {
+                console.log('Spotify connected successfully!');
                 this.elements.spotifyConnect.textContent = 'CONNECTED';
                 this.startPolling();
             }
 
             async startPolling() {
+                console.log('Starting to poll for currently playing track...');
                 await this.updateTrack();
                 setInterval(() => this.updateTrack(), 3000);
             }
 
             async updateTrack() {
-                if (!this.isConnected) return;
+                if (!this.isConnected) {
+                    console.log('Not connected, skipping track update');
+                    return;
+                }
 
                 try {
+                    console.log('Fetching currently playing track...');
                     const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
                         headers: {'Authorization': `Bearer ${this.accessToken}`}
                     });
 
+                    console.log('API Response status:', response.status);
+
                     if (response.status === 200) {
                         const data = await response.json();
+                        console.log('Track data received:', data);
                         this.showTrack(data);
                     } else {
+                        console.log('No track currently playing');
                         this.showNoTrack();
                     }
                 } catch (error) {
+                    console.error('Error fetching track:', error);
                     this.showNoTrack();
                 }
             }
 
             showTrack(data) {
                 if (!data?.item) {
+                    console.log('No track data available');
                     this.showNoTrack();
                     return;
                 }
 
                 const track = data.item;
+                console.log('Displaying track:', track.name, 'by', track.artists.map(a => a.name).join(', '));
+                
                 this.elements.trackName.textContent = track.name;
                 this.elements.artistName.textContent = track.artists.map(a => a.name).join(', ');
 
@@ -558,6 +589,7 @@
             }
 
             showNoTrack() {
+                console.log('Showing "no track" state');
                 this.elements.trackName.textContent = 'No Track';
                 this.elements.artistName.textContent = 'Play something on Spotify';
                 this.elements.albumArt.innerHTML = '';
@@ -565,6 +597,7 @@
             }
 
             showDisconnected() {
+                console.log('Showing disconnected state');
                 this.elements.trackName.textContent = 'Not Connected';
                 this.elements.artistName.textContent = 'Click Connect';
                 this.elements.albumArt.innerHTML = '';
@@ -572,11 +605,14 @@
             }
         }
 
+        // Debug: check if button exists
+        console.log('Connect button element:', document.getElementById('spotifyConnect'));
+
         // Start
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing timer...');
             new MinimalTimer();
         });
     </script>
 </body>
 </html>
-
