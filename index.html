@@ -480,17 +480,21 @@
                     this.accessToken = params.get('access_token');
                     this.isConnected = true;
                     this.onConnected();
-                    window.history.replaceState({}, document.title, window.location.pathname);
+                    // Pulisce l'URL senza ricaricare la pagina
+                    window.location.hash = '';
                 }
             }
 
             connect() {
+                // Usa ESATTAMENTE lo stesso URL del Spotify Dashboard
+                const redirectUri = 'https://st0rmosu.github.io/CustomPomodoroTimer/';
+                
                 const authUrl = `https://accounts.spotify.com/authorize?${
                     new URLSearchParams({
                         client_id: this.clientId,
                         response_type: 'token',
-                        redirect_uri: window.location.origin,
-                        scope: 'user-read-currently-playing',
+                        redirect_uri: redirectUri,
+                        scope: 'user-read-currently-playing user-read-playback-state',
                         show_dialog: true
                     })
                 }`;
@@ -575,5 +579,3 @@
     </script>
 </body>
 </html>
-
-
