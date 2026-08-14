@@ -111,13 +111,6 @@ Risposta usata: `item.name` (titolo), `item.artists[0].name` (artista), `item.al
 - **Animazione liquid su CSS variables**: la riempitura della tazza è guidata da variabili CSS, garantendo 60fps senza reflow del layout.
 - **Polling di Spotify**: lo stato di riproduzione è interrogato a intervalli; semplice e senza streaming persistenti.
 
-## Testing
-
-- Test manuali: avvio/pausa/reset/skip, cambio durate, passaggio FOCUS/BREAK con notifica.
-- Test dell'animazione liquid alle soglie 100%, 50% e 0%.
-- Test del flusso OAuth Spotify (connessione, token scaduto, nessuna riproduzione attiva).
-- Nessuna suite automatica (progetto statico).
-
 ## Limitations & Future Improvements
 
 - Il token Spotify scade (Implicit Grant) e richiede riconnessione manuale; un piccolo backend con Authorization Code + PKCE lo risolverebbe.
