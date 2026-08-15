@@ -19,13 +19,10 @@ FocusFlow è un timer Pomodoro minimale ed elegante progettato per massimizzare 
 
 ## Tech Stack
 
-| Tecnologia | Ruolo |
-|---|---|
-| HTML5 | Struttura della pagina |
-| CSS3 (Custom Properties, Flexbox) | Design system e animazioni |
-| JavaScript ES6+ | Logica del timer, stato e integrazione Spotify |
-| Spotify Web API | OAuth Implicit Grant + endpoint "currently playing" |
-| Web Audio API | Suoni di notifica |
+- **HTML5 & CSS3** — Struttura e animazioni liquid con CSS custom properties
+- **JavaScript ES6+** — State machine del timer e gestione cicli Focus/Break
+- **Spotify Web API** — Autenticazione OAuth e sincronizzazione brano in riproduzione
+- **Web Audio API** — Sintesi e riproduzione audio per i segnali di notifica
 
 ## Architettura
 
