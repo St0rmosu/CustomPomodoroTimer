@@ -85,9 +85,7 @@ Configurazione Spotify (opzionale):
 
 ## Screenshots / Demo
 
-Demo live: [st0rmosu.github.io/CustomPomodoroTimer](https://st0rmosu.github.io/CustomPomodoroTimer)
-
-> Inserire qui uno screenshot dell'interfaccia (es. `screenshot.png`).
+Demo live disponibile su: [st0rmosu.github.io/CustomPomodoroTimer](https://st0rmosu.github.io/CustomPomodoroTimer)
 
 ## API Documentation
 
