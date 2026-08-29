@@ -28,24 +28,18 @@ FocusFlow è un timer Pomodoro pensato per sessioni di studio senza distrazioni.
 
 Single-page application senza framework. La logica sta in un oggetto `Timer` che separa il conto alla rovescia (setInterval) dall'aggiornamento della UI e dell'animazione:
 
-```
-                  ┌────────────────────────────────────┐
-                  │              index.html            │
-                  ├────────────────────────────────────┤
-                  │  Timer core ─── setInterval ─────► │
-                  │    · state FOCUS/BREAK             │
-                  │    · remainingSeconds              │
-                  │         │                          │
-                  │         ├─► UI (timerDisplay)      │
-                  │         ├─► Liquid animation       │
-                  │         └─► Notifiche sonore       │
-                  │                                    │
-                  │  Spotify ── OAuth implicit ──────► │
-                  │    · token in #hash                │
-                  │    · poll /v1/me/player/...        │
-                  └──────────────┬─────────────────────┘
-                                 ▼
-                        api.spotify.com
+```mermaid
+flowchart TD
+    A[index.html] --> B[Timer core: setInterval]
+    B --> C[state FOCUS/BREAK]
+    B --> D[remainingSeconds]
+    B --> E[UI: timerDisplay]
+    B --> F[Animazione liquid]
+    B --> G[Notifiche sonore]
+    A --> H[Spotify: OAuth implicit]
+    H --> I[token in #hash]
+    H --> J[poll /v1/me/player/...]
+    A --> K[api.spotify.com]
 ```
 
 Spotify riceve il token via Implicit Grant (frammento `#access_token` dell'URL di redirect) e poi interroga periodicamente l'endpoint "currently playing" per aggiornare copertina, titolo, artista e progresso.
